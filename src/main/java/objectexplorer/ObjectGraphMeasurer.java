@@ -1,7 +1,7 @@
 package objectexplorer;
 
 import objectexplorer.ObjectExplorer.Feature;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -75,7 +75,7 @@ public class ObjectGraphMeasurer {
 
     @Override
     public String toString() {
-      return Objects.toStringHelper(this)
+      return MoreObjects.toStringHelper(this)
       .add("Objects", objects)
       .add("References", references)
       .add("Primitives", primitives)

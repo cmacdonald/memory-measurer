@@ -1,6 +1,7 @@
 package objectexplorer;
 
-import objectexplorer.ObjectExplorer.Feature;
+import java.util.EnumSet;
+
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -11,7 +12,7 @@ import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
 
-import java.util.EnumSet;
+import objectexplorer.ObjectExplorer.Feature;
 
 /**
  * A tool that can qualitatively measure the footprint
@@ -80,6 +81,34 @@ public class ObjectGraphMeasurer {
       .add("References", references)
       .add("Primitives", primitives)
       .toString();
+    }
+
+    public long getSize() {
+      long primitiveSize = 0;
+      for (Multiset.Entry<Class<?>> e : getPrimitives().entrySet())
+      {
+        long size = 0;
+        Class<?> prim = e.getElement();
+        if (prim.equals(boolean.class))
+          size = Byte.BYTES; 
+        if (prim.equals(char.class))
+          size = Character.BYTES; 
+        if (prim.equals(short.class))
+          size = Short.BYTES;
+        if (prim.equals(int.class))
+          size = Integer.BYTES; 
+        if (prim.equals(double.class))
+          size = Double.BYTES; 
+        if (prim.equals(float.class))
+          size = Float.BYTES; 
+        if (prim.equals(long.class))
+          size = Long.BYTES; 
+        primitiveSize += size *  (long) e.getCount();
+      } 
+      
+      return objects * 16l
+        + references * 4l //assumed compressed oops
+        + primitiveSize;
     }
   }
 
